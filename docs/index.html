@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,6 +15,7 @@
             --border: #3d4450;
             --success: #4caf50;
             --warning: #ff9800;
+            --sidebar-width: 280px;
         }
 
         * {
@@ -30,65 +32,75 @@
             line-height: 1.7;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
-
-        header {
-            text-align: center;
-            padding: 40px 0;
-            margin-bottom: 40px;
-            border-bottom: 2px solid var(--primary);
-        }
-
-        header h1 {
-            font-size: 3rem;
-            color: var(--primary);
-            margin-bottom: 10px;
-            text-shadow: 0 0 20px rgba(97, 218, 251, 0.3);
-        }
-
-        header p {
-            font-size: 1.2rem;
-            opacity: 0.8;
-        }
-
-        .toc {
+        /* Sidebar Styles */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: var(--sidebar-width);
+            height: 100vh;
             background: var(--accent);
-            border-radius: 12px;
-            padding: 30px;
-            margin-bottom: 40px;
-            border: 1px solid var(--border);
+            border-right: 1px solid var(--border);
+            overflow-y: auto;
+            z-index: 100;
         }
 
-        .toc h2 {
+        .sidebar-header {
+            padding: 25px 20px;
+            border-bottom: 1px solid var(--border);
+            text-align: center;
+            position: sticky;
+            top: 0;
+            background: var(--accent);
+        }
+
+        .sidebar-header h1 {
+            font-size: 1.4rem;
             color: var(--primary);
-            margin-bottom: 20px;
-            font-size: 1.5rem;
+            margin-bottom: 5px;
         }
 
-        .toc ul {
-            list-style: none;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 10px;
+        .sidebar-header p {
+            font-size: 0.85rem;
+            opacity: 0.7;
         }
 
-        .toc a {
+        .nav-menu {
+            padding: 15px 0;
+        }
+
+        .nav-menu a {
+            display: block;
+            padding: 12px 25px;
             color: var(--text);
             text-decoration: none;
-            padding: 10px 15px;
-            display: block;
-            border-radius: 8px;
+            font-size: 0.95rem;
+            border-left: 3px solid transparent;
             transition: all 0.3s ease;
-            background: rgba(97, 218, 251, 0.1);
         }
 
-        .toc a:hover {
-            background: rgba(97, 218, 251, 0.2);
-            transform: translateX(5px);
+        .nav-menu a:hover {
+            background: rgba(97, 218, 251, 0.1);
+            border-left-color: var(--primary);
+            padding-left: 30px;
+        }
+
+        .nav-menu a.active {
+            background: rgba(97, 218, 251, 0.15);
+            border-left-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .nav-menu a span {
+            opacity: 0.6;
+            margin-right: 8px;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            padding: 40px;
+            min-height: 100vh;
         }
 
         .topic {
@@ -142,13 +154,33 @@
             color: #e6e6e6;
         }
 
-        .keyword { color: #c792ea; }
-        .function { color: #82aaff; }
-        .string { color: #c3e88d; }
-        .component { color: #ffcb6b; }
-        .comment { color: #546e7a; }
-        .tag { color: #f07178; }
-        .attr { color: #ffcb6b; }
+        .keyword {
+            color: #c792ea;
+        }
+
+        .function {
+            color: #82aaff;
+        }
+
+        .string {
+            color: #c3e88d;
+        }
+
+        .component {
+            color: #ffcb6b;
+        }
+
+        .comment {
+            color: #546e7a;
+        }
+
+        .tag {
+            color: #f07178;
+        }
+
+        .attr {
+            color: #ffcb6b;
+        }
 
         .note {
             background: rgba(255, 152, 0, 0.1);
@@ -172,7 +204,8 @@
             margin: 20px 0;
         }
 
-        th, td {
+        th,
+        td {
             padding: 12px 15px;
             text-align: left;
             border: 1px solid var(--border);
@@ -187,6 +220,16 @@
             background: rgba(255, 255, 255, 0.02);
         }
 
+        ul,
+        ol {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
         footer {
             text-align: center;
             padding: 30px;
@@ -195,48 +238,81 @@
             opacity: 0.7;
         }
 
-        @media (max-width: 768px) {
-            header h1 {
-                font-size: 2rem;
+        /* Mobile Toggle Button */
+        .menu-toggle {
+            display: none;
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            z-index: 200;
+            background: var(--primary);
+            color: var(--accent);
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 900px) {
+            .menu-toggle {
+                display: block;
             }
-            .topic {
-                padding: 20px;
+
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 80px 20px 40px;
             }
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <header>
-            <h1>⚛️ React Reference Notes</h1>
-            <p>A comprehensive guide for students learning React</p>
-        </header>
 
-        <!-- Table of Contents -->
-        <nav class="toc">
-            <h2>📚 Table of Contents</h2>
-            <ul>
-                <li><a href="#intro">1. Introduction to React</a></li>
-                <li><a href="#jsx">2. JSX Syntax</a></li>
-                <li><a href="#components">3. Components</a></li>
-                <li><a href="#props">4. Props</a></li>
-                <li><a href="#state">5. State (useState)</a></li>
-                <li><a href="#events">6. Event Handling</a></li>
-                <li><a href="#useEffect">7. useEffect Hook</a></li>
-                <li><a href="#conditional">8. Conditional Rendering</a></li>
-                <li><a href="#lists">9. Lists & Keys</a></li>
-                <li><a href="#forms">10. Forms & Inputs</a></li>
-            </ul>
-        </nav>
+<body>
+    <!-- Mobile Menu Toggle -->
+    <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+
+    <!-- Left Sidebar Navigation -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h1>⚛️ React Notes</h1>
+            <p>Student Reference Guide</p>
+        </div>
+        <div class="nav-menu">
+            <a href="#intro"><span>01.</span> Introduction to React</a>
+            <a href="#jsx"><span>02.</span> JSX Syntax</a>
+            <a href="#components"><span>03.</span> Components</a>
+            <a href="#props"><span>04.</span> Props</a>
+            <a href="#state"><span>05.</span> State (useState)</a>
+            <a href="#events"><span>06.</span> Event Handling</a>
+            <a href="#useEffect"><span>07.</span> useEffect Hook</a>
+            <a href="#conditional"><span>08.</span> Conditional Rendering</a>
+            <a href="#lists"><span>09.</span> Lists & Keys</a>
+            <a href="#forms"><span>10.</span> Forms & Inputs</a>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
 
         <!-- Topic 1: Introduction -->
         <section class="topic" id="intro">
             <h2>1. Introduction to React</h2>
             <div class="description">
                 <strong>What is React?</strong><br>
-                React is a JavaScript library for building user interfaces, developed by Facebook. It allows you to create reusable UI components and efficiently update the DOM using a Virtual DOM.
+                React is a JavaScript library for building user interfaces, developed by Facebook. It allows you to
+                create reusable UI components and efficiently update the DOM using a Virtual DOM.
             </div>
-            
+
             <h3>Key Features</h3>
             <ul>
                 <li><strong>Component-Based:</strong> Build encapsulated components that manage their own state</li>
@@ -246,7 +322,7 @@
             </ul>
 
             <h3>Creating a React App</h3>
-<pre><code><span class="comment"># Using Create React App</span>
+            <pre><code><span class="comment"># Using Create React App</span>
 npx create-react-app my-app
 cd my-app
 npm start
@@ -263,7 +339,8 @@ npm run dev</code></pre>
             <h2>2. JSX Syntax</h2>
             <div class="description">
                 <strong>What is JSX?</strong><br>
-                JSX (JavaScript XML) is a syntax extension that allows you to write HTML-like code in JavaScript. It makes React code more readable and expressive.
+                JSX (JavaScript XML) is a syntax extension that allows you to write HTML-like code in JavaScript. It
+                makes React code more readable and expressive.
             </div>
 
             <h3>Basic JSX Rules</h3>
@@ -291,7 +368,7 @@ npm run dev</code></pre>
             </table>
 
             <h3>Example Syntax</h3>
-<pre><code><span class="keyword">const</span> <span class="function">Greeting</span> = () => {
+            <pre><code><span class="keyword">const</span> <span class="function">Greeting</span> = () => {
     <span class="keyword">const</span> name = <span class="string">"Student"</span>;
     <span class="keyword">const</span> isLoggedIn = <span class="keyword">true</span>;
     
@@ -305,7 +382,8 @@ npm run dev</code></pre>
 };</code></pre>
 
             <div class="tip">
-                💡 <strong>Tip:</strong> Use React Fragments <code>&lt;&gt;...&lt;/&gt;</code> to avoid adding extra DOM nodes when wrapping multiple elements.
+                💡 <strong>Tip:</strong> Use React Fragments <code>&lt;&gt;...&lt;/&gt;</code> to avoid adding extra DOM
+                nodes when wrapping multiple elements.
             </div>
         </section>
 
@@ -314,11 +392,12 @@ npm run dev</code></pre>
             <h2>3. Components</h2>
             <div class="description">
                 <strong>What are Components?</strong><br>
-                Components are the building blocks of React applications. They are reusable pieces of UI that can accept inputs (props) and return React elements describing what should appear on screen.
+                Components are the building blocks of React applications. They are reusable pieces of UI that can accept
+                inputs (props) and return React elements describing what should appear on screen.
             </div>
 
             <h3>Functional Component (Recommended)</h3>
-<pre><code><span class="comment">// Simple functional component</span>
+            <pre><code><span class="comment">// Simple functional component</span>
 <span class="keyword">function</span> <span class="component">Welcome</span>() {
     <span class="keyword">return</span> <span class="tag">&lt;h1&gt;</span>Welcome to React!<span class="tag">&lt;/h1&gt;</span>;
 }
@@ -339,7 +418,7 @@ npm run dev</code></pre>
 }</code></pre>
 
             <h3>Class Component (Legacy)</h3>
-<pre><code><span class="keyword">import</span> React, { Component } <span class="keyword">from</span> <span class="string">'react'</span>;
+            <pre><code><span class="keyword">import</span> React, { Component } <span class="keyword">from</span> <span class="string">'react'</span>;
 
 <span class="keyword">class</span> <span class="component">Welcome</span> <span class="keyword">extends</span> Component {
     <span class="function">render</span>() {
@@ -348,7 +427,8 @@ npm run dev</code></pre>
 }</code></pre>
 
             <div class="note">
-                ⚠️ <strong>Note:</strong> Always start component names with a capital letter. React treats lowercase names as DOM tags.
+                ⚠️ <strong>Note:</strong> Always start component names with a capital letter. React treats lowercase
+                names as DOM tags.
             </div>
         </section>
 
@@ -357,11 +437,12 @@ npm run dev</code></pre>
             <h2>4. Props (Properties)</h2>
             <div class="description">
                 <strong>What are Props?</strong><br>
-                Props are read-only inputs passed from parent to child components. They allow components to be dynamic and reusable by customizing their behavior and appearance.
+                Props are read-only inputs passed from parent to child components. They allow components to be dynamic
+                and reusable by customizing their behavior and appearance.
             </div>
 
             <h3>Passing and Receiving Props</h3>
-<pre><code><span class="comment">// Parent Component - passing props</span>
+            <pre><code><span class="comment">// Parent Component - passing props</span>
 <span class="keyword">function</span> <span class="component">App</span>() {
     <span class="keyword">return</span> (
         <span class="tag">&lt;div&gt;</span>
@@ -396,7 +477,7 @@ npm run dev</code></pre>
 }</code></pre>
 
             <h3>Default Props</h3>
-<pre><code><span class="keyword">function</span> <span class="component">Button</span>({ text = <span class="string">"Click Me"</span>, color = <span class="string">"blue"</span> }) {
+            <pre><code><span class="keyword">function</span> <span class="component">Button</span>({ text = <span class="string">"Click Me"</span>, color = <span class="string">"blue"</span> }) {
     <span class="keyword">return</span> (
         <span class="tag">&lt;button</span> <span class="attr">style</span>={{ backgroundColor: color }}<span class="tag">&gt;</span>
             {text}
@@ -414,11 +495,13 @@ npm run dev</code></pre>
             <h2>5. State (useState Hook)</h2>
             <div class="description">
                 <strong>What is State?</strong><br>
-                State is data that can change over time within a component. When state changes, React re-renders the component to reflect the new data. The <code>useState</code> hook is used to add state to functional components.
+                State is data that can change over time within a component. When state changes, React re-renders the
+                component to reflect the new data. The <code>useState</code> hook is used to add state to functional
+                components.
             </div>
 
             <h3>Basic useState Syntax</h3>
-<pre><code><span class="keyword">import</span> { useState } <span class="keyword">from</span> <span class="string">'react'</span>;
+            <pre><code><span class="keyword">import</span> { useState } <span class="keyword">from</span> <span class="string">'react'</span>;
 
 <span class="keyword">function</span> <span class="component">Counter</span>() {
     <span class="comment">// Syntax: const [stateValue, setterFunction] = useState(initialValue);</span>
@@ -435,7 +518,7 @@ npm run dev</code></pre>
 }</code></pre>
 
             <h3>Different State Types</h3>
-<pre><code><span class="keyword">function</span> <span class="component">StateExamples</span>() {
+            <pre><code><span class="keyword">function</span> <span class="component">StateExamples</span>() {
     <span class="comment">// Number</span>
     <span class="keyword">const</span> [count, setCount] = <span class="function">useState</span>(0);
     
@@ -463,7 +546,8 @@ npm run dev</code></pre>
 }</code></pre>
 
             <div class="tip">
-                💡 <strong>Tip:</strong> Always use the setter function to update state. Never modify state directly like <code>count = count + 1</code>.
+                💡 <strong>Tip:</strong> Always use the setter function to update state. Never modify state directly
+                like <code>count = count + 1</code>.
             </div>
         </section>
 
@@ -472,7 +556,8 @@ npm run dev</code></pre>
             <h2>6. Event Handling</h2>
             <div class="description">
                 <strong>What is Event Handling?</strong><br>
-                React handles events using camelCase syntax and passes functions as event handlers. Events work similarly to DOM events but with React's synthetic event system.
+                React handles events using camelCase syntax and passes functions as event handlers. Events work
+                similarly to DOM events but with React's synthetic event system.
             </div>
 
             <h3>Common Event Types</h3>
@@ -481,17 +566,38 @@ npm run dev</code></pre>
                     <th>Event</th>
                     <th>Description</th>
                 </tr>
-                <tr><td><code>onClick</code></td><td>When element is clicked</td></tr>
-                <tr><td><code>onChange</code></td><td>When input value changes</td></tr>
-                <tr><td><code>onSubmit</code></td><td>When form is submitted</td></tr>
-                <tr><td><code>onMouseEnter</code></td><td>When mouse enters element</td></tr>
-                <tr><td><code>onMouseLeave</code></td><td>When mouse leaves element</td></tr>
-                <tr><td><code>onFocus</code></td><td>When element receives focus</td></tr>
-                <tr><td><code>onBlur</code></td><td>When element loses focus</td></tr>
+                <tr>
+                    <td><code>onClick</code></td>
+                    <td>When element is clicked</td>
+                </tr>
+                <tr>
+                    <td><code>onChange</code></td>
+                    <td>When input value changes</td>
+                </tr>
+                <tr>
+                    <td><code>onSubmit</code></td>
+                    <td>When form is submitted</td>
+                </tr>
+                <tr>
+                    <td><code>onMouseEnter</code></td>
+                    <td>When mouse enters element</td>
+                </tr>
+                <tr>
+                    <td><code>onMouseLeave</code></td>
+                    <td>When mouse leaves element</td>
+                </tr>
+                <tr>
+                    <td><code>onFocus</code></td>
+                    <td>When element receives focus</td>
+                </tr>
+                <tr>
+                    <td><code>onBlur</code></td>
+                    <td>When element loses focus</td>
+                </tr>
             </table>
 
             <h3>Event Handler Examples</h3>
-<pre><code><span class="keyword">function</span> <span class="component">EventExamples</span>() {
+            <pre><code><span class="keyword">function</span> <span class="component">EventExamples</span>() {
     <span class="comment">// Basic click handler</span>
     <span class="keyword">const</span> <span class="function">handleClick</span> = () => {
         <span class="function">alert</span>(<span class="string">"Button clicked!"</span>);
@@ -521,7 +627,8 @@ npm run dev</code></pre>
 }</code></pre>
 
             <div class="note">
-                ⚠️ <strong>Note:</strong> When passing a function with parameters, wrap it in an arrow function: <code>onClick={() => handleClick(id)}</code>
+                ⚠️ <strong>Note:</strong> When passing a function with parameters, wrap it in an arrow function:
+                <code>onClick={() => handleClick(id)}</code>
             </div>
         </section>
 
@@ -530,11 +637,12 @@ npm run dev</code></pre>
             <h2>7. useEffect Hook</h2>
             <div class="description">
                 <strong>What is useEffect?</strong><br>
-                The <code>useEffect</code> hook lets you perform side effects in functional components. Common uses include: fetching data, setting up subscriptions, and manually changing the DOM.
+                The <code>useEffect</code> hook lets you perform side effects in functional components. Common uses
+                include: fetching data, setting up subscriptions, and manually changing the DOM.
             </div>
 
             <h3>useEffect Patterns</h3>
-<pre><code><span class="keyword">import</span> { useState, useEffect } <span class="keyword">from</span> <span class="string">'react'</span>;
+            <pre><code><span class="keyword">import</span> { useState, useEffect } <span class="keyword">from</span> <span class="string">'react'</span>;
 
 <span class="keyword">function</span> <span class="component">EffectExamples</span>() {
     <span class="keyword">const</span> [data, setData] = <span class="function">useState</span>(<span class="keyword">null</span>);
@@ -568,7 +676,7 @@ npm run dev</code></pre>
 }</code></pre>
 
             <h3>Fetching Data Example</h3>
-<pre><code><span class="keyword">function</span> <span class="component">UsersList</span>() {
+            <pre><code><span class="keyword">function</span> <span class="component">UsersList</span>() {
     <span class="keyword">const</span> [users, setUsers] = <span class="function">useState</span>([]);
     <span class="keyword">const</span> [loading, setLoading] = <span class="function">useState</span>(<span class="keyword">true</span>);
     
@@ -598,11 +706,12 @@ npm run dev</code></pre>
             <h2>8. Conditional Rendering</h2>
             <div class="description">
                 <strong>What is Conditional Rendering?</strong><br>
-                Conditional rendering allows you to render different UI elements based on certain conditions. React uses JavaScript operators like ternary (<code>? :</code>) and logical AND (<code>&&</code>).
+                Conditional rendering allows you to render different UI elements based on certain conditions. React uses
+                JavaScript operators like ternary (<code>? :</code>) and logical AND (<code>&&</code>).
             </div>
 
             <h3>Conditional Rendering Methods</h3>
-<pre><code><span class="keyword">function</span> <span class="component">ConditionalExamples</span>({ isLoggedIn, messages, user }) {
+            <pre><code><span class="keyword">function</span> <span class="component">ConditionalExamples</span>({ isLoggedIn, messages, user }) {
     <span class="keyword">return</span> (
         <span class="tag">&lt;div&gt;</span>
             <span class="comment">{/* Method 1: Ternary Operator */}</span>
@@ -640,11 +749,12 @@ npm run dev</code></pre>
             <h2>9. Lists & Keys</h2>
             <div class="description">
                 <strong>Rendering Lists</strong><br>
-                Use the <code>map()</code> method to transform arrays into lists of elements. Each item needs a unique <code>key</code> prop to help React identify which items have changed.
+                Use the <code>map()</code> method to transform arrays into lists of elements. Each item needs a unique
+                <code>key</code> prop to help React identify which items have changed.
             </div>
 
             <h3>Basic List Rendering</h3>
-<pre><code><span class="keyword">function</span> <span class="component">FruitList</span>() {
+            <pre><code><span class="keyword">function</span> <span class="component">FruitList</span>() {
     <span class="keyword">const</span> fruits = [<span class="string">"Apple"</span>, <span class="string">"Banana"</span>, <span class="string">"Orange"</span>];
     
     <span class="keyword">return</span> (
@@ -677,7 +787,8 @@ npm run dev</code></pre>
 }</code></pre>
 
             <div class="note">
-                ⚠️ <strong>Important:</strong> Never use array index as key if the list can be reordered. Use unique IDs from your data instead.
+                ⚠️ <strong>Important:</strong> Never use array index as key if the list can be reordered. Use unique IDs
+                from your data instead.
             </div>
         </section>
 
@@ -686,11 +797,12 @@ npm run dev</code></pre>
             <h2>10. Forms & Inputs</h2>
             <div class="description">
                 <strong>Controlled Components</strong><br>
-                In React, form elements are typically "controlled" - their values are driven by component state. This gives you full control over the form data.
+                In React, form elements are typically "controlled" - their values are driven by component state. This
+                gives you full control over the form data.
             </div>
 
             <h3>Basic Form Example</h3>
-<pre><code><span class="keyword">import</span> { useState } <span class="keyword">from</span> <span class="string">'react'</span>;
+            <pre><code><span class="keyword">import</span> { useState } <span class="keyword">from</span> <span class="string">'react'</span>;
 
 <span class="keyword">function</span> <span class="component">LoginForm</span>() {
     <span class="keyword">const</span> [formData, setFormData] = <span class="function">useState</span>({
@@ -735,7 +847,7 @@ npm run dev</code></pre>
 }</code></pre>
 
             <h3>Different Input Types</h3>
-<pre><code><span class="comment">// Checkbox</span>
+            <pre><code><span class="comment">// Checkbox</span>
 <span class="tag">&lt;input</span>
     <span class="attr">type</span>=<span class="string">"checkbox"</span>
     <span class="attr">checked</span>={isChecked}
@@ -756,7 +868,8 @@ npm run dev</code></pre>
 <span class="tag">/&gt;</span></code></pre>
 
             <div class="tip">
-                💡 <strong>Tip:</strong> Always use <code>e.preventDefault()</code> in form submit handlers to prevent the default page refresh behavior.
+                💡 <strong>Tip:</strong> Always use <code>e.preventDefault()</code> in form submit handlers to prevent
+                the default page refresh behavior.
             </div>
         </section>
 
@@ -764,6 +877,44 @@ npm run dev</code></pre>
             <p>📖 React Reference Notes | Created for Student Learning</p>
             <p>Last Updated: January 2026</p>
         </footer>
-    </div>
+    </main>
+
+    <script>
+        // Mobile sidebar toggle
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
+        }
+
+        // Close sidebar when clicking a link on mobile
+        document.querySelectorAll('.nav-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 900) {
+                    document.getElementById('sidebar').classList.remove('open');
+                }
+            });
+        });
+
+        // Highlight active menu item on scroll
+        const sections = document.querySelectorAll('.topic');
+        const navLinks = document.querySelectorAll('.nav-menu a');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (scrollY >= sectionTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
 </body>
+
 </html>
