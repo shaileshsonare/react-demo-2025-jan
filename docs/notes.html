@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>React Reference Notes - Student Guide</title>
+    <style>
+        :root {
+            --primary: #61dafb;
+            --secondary: #282c34;
+            --accent: #20232a;
+            --text: #ffffff;
+            --code-bg: #1a1d23;
+            --border: #3d4450;
+            --success: #4caf50;
+            --warning: #ff9800;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--accent) 100%);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 0;
+            margin-bottom: 40px;
+            border-bottom: 2px solid var(--primary);
+        }
+
+        header h1 {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+            text-shadow: 0 0 20px rgba(97, 218, 251, 0.3);
+        }
+
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.8;
+        }
+
+        .toc {
+            background: var(--accent);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 40px;
+            border: 1px solid var(--border);
+        }
+
+        .toc h2 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+
+        .toc ul {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 10px;
+        }
+
+        .toc a {
+            color: var(--text);
+            text-decoration: none;
+            padding: 10px 15px;
+            display: block;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            background: rgba(97, 218, 251, 0.1);
+        }
+
+        .toc a:hover {
+            background: rgba(97, 218, 251, 0.2);
+            transform: translateX(5px);
+        }
+
+        .topic {
+            background: var(--accent);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid var(--border);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .topic:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .topic h2 {
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .topic h3 {
+            color: #88d8f5;
+            font-size: 1.3rem;
+            margin: 20px 0 10px 0;
+        }
+
+        .description {
+            background: rgba(97, 218, 251, 0.05);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid var(--primary);
+        }
+
+        pre {
+            background: var(--code-bg);
+            border-radius: 8px;
+            padding: 20px;
+            overflow-x: auto;
+            margin: 15px 0;
+            border: 1px solid var(--border);
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.95rem;
+            color: #e6e6e6;
+        }
+
+        .keyword { color: #c792ea; }
+        .function { color: #82aaff; }
+        .string { color: #c3e88d; }
+        .component { color: #ffcb6b; }
+        .comment { color: #546e7a; }
+        .tag { color: #f07178; }
+        .attr { color: #ffcb6b; }
+
+        .note {
+            background: rgba(255, 152, 0, 0.1);
+            border-left: 4px solid var(--warning);
+            padding: 15px;
+            border-radius: 0 8px 8px 0;
+            margin: 15px 0;
+        }
+
+        .tip {
+            background: rgba(76, 175, 80, 0.1);
+            border-left: 4px solid var(--success);
+            padding: 15px;
+            border-radius: 0 8px 8px 0;
+            margin: 15px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border: 1px solid var(--border);
+        }
+
+        th {
+            background: rgba(97, 218, 251, 0.2);
+            color: var(--primary);
+        }
+
+        tr:nth-child(even) {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            margin-top: 40px;
+            border-top: 1px solid var(--border);
+            opacity: 0.7;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+            .topic {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>⚛️ React Reference Notes</h1>
+            <p>A comprehensive guide for students learning React</p>
+        </header>
+
+        <!-- Table of Contents -->
+        <nav class="toc">
+            <h2>📚 Table of Contents</h2>
+            <ul>
+                <li><a href="#intro">1. Introduction to React</a></li>
+                <li><a href="#jsx">2. JSX Syntax</a></li>
+                <li><a href="#components">3. Components</a></li>
+                <li><a href="#props">4. Props</a></li>
+                <li><a href="#state">5. State (useState)</a></li>
+                <li><a href="#events">6. Event Handling</a></li>
+                <li><a href="#useEffect">7. useEffect Hook</a></li>
+                <li><a href="#conditional">8. Conditional Rendering</a></li>
+                <li><a href="#lists">9. Lists & Keys</a></li>
+                <li><a href="#forms">10. Forms & Inputs</a></li>
+            </ul>
+        </nav>
+
+        <!-- Topic 1: Introduction -->
+        <section class="topic" id="intro">
+            <h2>1. Introduction to React</h2>
+            <div class="description">
+                <strong>What is React?</strong><br>
+                React is a JavaScript library for building user interfaces, developed by Facebook. It allows you to create reusable UI components and efficiently update the DOM using a Virtual DOM.
+            </div>
+            
+            <h3>Key Features</h3>
+            <ul>
+                <li><strong>Component-Based:</strong> Build encapsulated components that manage their own state</li>
+                <li><strong>Virtual DOM:</strong> Efficiently updates only what needs to change</li>
+                <li><strong>Declarative:</strong> Describe what the UI should look like, React handles the rest</li>
+                <li><strong>One-Way Data Flow:</strong> Data flows from parent to child via props</li>
+            </ul>
+
+            <h3>Creating a React App</h3>
+<pre><code><span class="comment"># Using Create React App</span>
+npx create-react-app my-app
+cd my-app
+npm start
+
+<span class="comment"># Using Vite (faster alternative)</span>
+npm create vite@latest my-app -- --template react
+cd my-app
+npm install
+npm run dev</code></pre>
+        </section>
+
+        <!-- Topic 2: JSX -->
+        <section class="topic" id="jsx">
+            <h2>2. JSX Syntax</h2>
+            <div class="description">
+                <strong>What is JSX?</strong><br>
+                JSX (JavaScript XML) is a syntax extension that allows you to write HTML-like code in JavaScript. It makes React code more readable and expressive.
+            </div>
+
+            <h3>Basic JSX Rules</h3>
+            <table>
+                <tr>
+                    <th>Rule</th>
+                    <th>Example</th>
+                </tr>
+                <tr>
+                    <td>Must return single parent element</td>
+                    <td>Wrap in <code>&lt;div&gt;</code> or <code>&lt;&gt;&lt;/&gt;</code></td>
+                </tr>
+                <tr>
+                    <td>Use <code>className</code> instead of <code>class</code></td>
+                    <td><code>&lt;div className="box"&gt;</code></td>
+                </tr>
+                <tr>
+                    <td>All tags must be closed</td>
+                    <td><code>&lt;img /&gt;</code>, <code>&lt;br /&gt;</code></td>
+                </tr>
+                <tr>
+                    <td>JavaScript expressions in curly braces</td>
+                    <td><code>{variable}</code>, <code>{2 + 2}</code></td>
+                </tr>
+            </table>
+
+            <h3>Example Syntax</h3>
+<pre><code><span class="keyword">const</span> <span class="function">Greeting</span> = () => {
+    <span class="keyword">const</span> name = <span class="string">"Student"</span>;
+    <span class="keyword">const</span> isLoggedIn = <span class="keyword">true</span>;
+    
+    <span class="keyword">return</span> (
+        <span class="tag">&lt;div</span> <span class="attr">className</span>=<span class="string">"greeting"</span><span class="tag">&gt;</span>
+            <span class="tag">&lt;h1&gt;</span>Hello, {name}!<span class="tag">&lt;/h1&gt;</span>
+            <span class="tag">&lt;p&gt;</span>Status: {isLoggedIn ? <span class="string">"Online"</span> : <span class="string">"Offline"</span>}<span class="tag">&lt;/p&gt;</span>
+            <span class="tag">&lt;img</span> <span class="attr">src</span>=<span class="string">"avatar.png"</span> <span class="attr">alt</span>=<span class="string">"User"</span> <span class="tag">/&gt;</span>
+        <span class="tag">&lt;/div&gt;</span>
+    );
+};</code></pre>
+
+            <div class="tip">
+                💡 <strong>Tip:</strong> Use React Fragments <code>&lt;&gt;...&lt;/&gt;</code> to avoid adding extra DOM nodes when wrapping multiple elements.
+            </div>
+        </section>
+
+        <!-- Topic 3: Components -->
+        <section class="topic" id="components">
+            <h2>3. Components</h2>
+            <div class="description">
+                <strong>What are Components?</strong><br>
+                Components are the building blocks of React applications. They are reusable pieces of UI that can accept inputs (props) and return React elements describing what should appear on screen.
+            </div>
+
+            <h3>Functional Component (Recommended)</h3>
+<pre><code><span class="comment">// Simple functional component</span>
+<span class="keyword">function</span> <span class="component">Welcome</span>() {
+    <span class="keyword">return</span> <span class="tag">&lt;h1&gt;</span>Welcome to React!<span class="tag">&lt;/h1&gt;</span>;
+}
+
+<span class="comment">// Arrow function syntax</span>
+<span class="keyword">const</span> <span class="component">Welcome</span> = () => {
+    <span class="keyword">return</span> <span class="tag">&lt;h1&gt;</span>Welcome to React!<span class="tag">&lt;/h1&gt;</span>;
+};
+
+<span class="comment">// Using the component</span>
+<span class="keyword">function</span> <span class="component">App</span>() {
+    <span class="keyword">return</span> (
+        <span class="tag">&lt;div&gt;</span>
+            <span class="tag">&lt;<span class="component">Welcome</span> /&gt;</span>
+            <span class="tag">&lt;<span class="component">Welcome</span> /&gt;</span>
+        <span class="tag">&lt;/div&gt;</span>
+    );
+}</code></pre>
+
+            <h3>Class Component (Legacy)</h3>
+<pre><code><span class="keyword">import</span> React, { Component } <span class="keyword">from</span> <span class="string">'react'</span>;
+
+<span class="keyword">class</span> <span class="component">Welcome</span> <span class="keyword">extends</span> Component {
+    <span class="function">render</span>() {
+        <span class="keyword">return</span> <span class="tag">&lt;h1&gt;</span>Welcome to React!<span class="tag">&lt;/h1&gt;</span>;
+    }
+}</code></pre>
+
+            <div class="note">
+                ⚠️ <strong>Note:</strong> Always start component names with a capital letter. React treats lowercase names as DOM tags.
+            </div>
+        </section>
+
+        <!-- Topic 4: Props -->
+        <section class="topic" id="props">
+            <h2>4. Props (Properties)</h2>
+            <div class="description">
+                <strong>What are Props?</strong><br>
+                Props are read-only inputs passed from parent to child components. They allow components to be dynamic and reusable by customizing their behavior and appearance.
+            </div>
+
+            <h3>Passing and Receiving Props</h3>
+<pre><code><span class="comment">// Parent Component - passing props</span>
+<span class="keyword">function</span> <span class="component">App</span>() {
+    <span class="keyword">return</span> (
+        <span class="tag">&lt;div&gt;</span>
+            <span class="tag">&lt;<span class="component">UserCard</span></span> 
+                <span class="attr">name</span>=<span class="string">"John Doe"</span> 
+                <span class="attr">age</span>={25} 
+                <span class="attr">isActive</span>={<span class="keyword">true</span>} 
+            <span class="tag">/&gt;</span>
+        <span class="tag">&lt;/div&gt;</span>
+    );
+}
+
+<span class="comment">// Child Component - receiving props</span>
+<span class="keyword">function</span> <span class="component">UserCard</span>(props) {
+    <span class="keyword">return</span> (
+        <span class="tag">&lt;div</span> <span class="attr">className</span>=<span class="string">"card"</span><span class="tag">&gt;</span>
+            <span class="tag">&lt;h2&gt;</span>{props.name}<span class="tag">&lt;/h2&gt;</span>
+            <span class="tag">&lt;p&gt;</span>Age: {props.age}<span class="tag">&lt;/p&gt;</span>
+            <span class="tag">&lt;p&gt;</span>Status: {props.isActive ? <span class="string">"Active"</span> : <span class="string">"Inactive"</span>}<span class="tag">&lt;/p&gt;</span>
+        <span class="tag">&lt;/div&gt;</span>
+    );
+}
+
+<span class="comment">// With destructuring (cleaner)</span>
+<span class="keyword">function</span> <span class="component">UserCard</span>({ name, age, isActive }) {
+    <span class="keyword">return</span> (
+        <span class="tag">&lt;div</span> <span class="attr">className</span>=<span class="string">"card"</span><span class="tag">&gt;</span>
+            <span class="tag">&lt;h2&gt;</span>{name}<span class="tag">&lt;/h2&gt;</span>
+            <span class="tag">&lt;p&gt;</span>Age: {age}<span class="tag">&lt;/p&gt;</span>
+        <span class="tag">&lt;/div&gt;</span>
+    );
+}</code></pre>
+
+            <h3>Default Props</h3>
+<pre><code><span class="keyword">function</span> <span class="component">Button</span>({ text = <span class="string">"Click Me"</span>, color = <span class="string">"blue"</span> }) {
+    <span class="keyword">return</span> (
+        <span class="tag">&lt;button</span> <span class="attr">style</span>={{ backgroundColor: color }}<span class="tag">&gt;</span>
+            {text}
+        <span class="tag">&lt;/button&gt;</span>
+    );
+}</code></pre>
+
+            <div class="note">
+                ⚠️ <strong>Important:</strong> Props are read-only! Never modify props directly inside a component.
+            </div>
+        </section>
+
+        <!-- Topic 5: State -->
+        <section class="topic" id="state">
+            <h2>5. State (useState Hook)</h2>
+            <div class="description">
+                <strong>What is State?</strong><br>
+                State is data that can change over time within a component. When state changes, React re-renders the component to reflect the new data. The <code>useState</code> hook is used to add state to functional components.
+            </div>
+
+            <h3>Basic useState Syntax</h3>
+<pre><code><span class="keyword">import</span> { useState } <span class="keyword">from</span> <span class="string">'react'</span>;
+
+<span class="keyword">function</span> <span class="component">Counter</span>() {
+    <span class="comment">// Syntax: const [stateValue, setterFunction] = useState(initialValue);</span>
+    <span class="keyword">const</span> [count, setCount] = <span class="function">useState</span>(0);
+    
+    <span class="keyword">return</span> (
+        <span class="tag">&lt;div&gt;</span>
+            <span class="tag">&lt;p&gt;</span>Count: {count}<span class="tag">&lt;/p&gt;</span>
+            <span class="tag">&lt;button</span> <span class="attr">onClick</span>={() => <span class="function">setCount</span>(count + 1)}<span class="tag">&gt;</span>
+                Increment
+            <span class="tag">&lt;/button&gt;</span>
+        <span class="tag">&lt;/div&gt;</span>
+    );
+}</code></pre>
+
+            <h3>Different State Types</h3>
+<pre><code><span class="keyword">function</span> <span class="component">StateExamples</span>() {
+    <span class="comment">// Number</span>
+    <span class="keyword">const</span> [count, setCount] = <span class="function">useState</span>(0);
+    
+    <span class="comment">// String</span>
+    <span class="keyword">const</span> [name, setName] = <span class="function">useState</span>(<span class="string">""</span>);
+    
+    <span class="comment">// Boolean</span>
+    <span class="keyword">const</span> [isVisible, setIsVisible] = <span class="function">useState</span>(<span class="keyword">false</span>);
+    
+    <span class="comment">// Array</span>
+    <span class="keyword">const</span> [items, setItems] = <span class="function">useState</span>([]);
+    
+    <span class="comment">// Object</span>
+    <span class="keyword">const</span> [user, setUser] = <span class="function">useState</span>({ name: <span class="string">""</span>, age: 0 });
+    
+    <span class="comment">// Updating array (add item)</span>
+    <span class="keyword">const</span> addItem = () => {
+        <span class="function">setItems</span>([...items, <span class="string">"New Item"</span>]);
+    };
+    
+    <span class="comment">// Updating object</span>
+    <span class="keyword">const</span> updateUser = () => {
+        <span class="function">setUser</span>({ ...user, name: <span class="string">"John"</span> });
+    };
+}</code></pre>
+
+            <div class="tip">
+                💡 <strong>Tip:</strong> Always use the setter function to update state. Never modify state directly like <code>count = count + 1</code>.
+            </div>
+        </section>
+
+        <!-- Topic 6: Events -->
+        <section class="topic" id="events">
+            <h2>6. Event Handling</h2>
+            <div class="description">
+                <strong>What is Event Handling?</strong><br>
+                React handles events using camelCase syntax and passes functions as event handlers. Events work similarly to DOM events but with React's synthetic event system.
+            </div>
+
+            <h3>Common Event Types</h3>
+            <table>
+                <tr>
+                    <th>Event</th>
+                    <th>Description</th>
+                </tr>
+                <tr><td><code>onClick</code></td><td>When element is clicked</td></tr>
+                <tr><td><code>onChange</code></td><td>When input value changes</td></tr>
+                <tr><td><code>onSubmit</code></td><td>When form is submitted</td></tr>
+                <tr><td><code>onMouseEnter</code></td><td>When mouse enters element</td></tr>
+                <tr><td><code>onMouseLeave</code></td><td>When mouse leaves element</td></tr>
+                <tr><td><code>onFocus</code></td><td>When element receives focus</td></tr>
+                <tr><td><code>onBlur</code></td><td>When element loses focus</td></tr>
+            </table>
+
+            <h3>Event Handler Examples</h3>
+<pre><code><span class="keyword">function</span> <span class="component">EventExamples</span>() {
+    <span class="comment">// Basic click handler</span>
+    <span class="keyword">const</span> <span class="function">handleClick</span> = () => {
+        <span class="function">alert</span>(<span class="string">"Button clicked!"</span>);
+    };
+    
+    <span class="comment">// Handler with event object</span>
+    <span class="keyword">const</span> <span class="function">handleChange</span> = (event) => {
+        console.<span class="function">log</span>(event.target.value);
+    };
+    
+    <span class="comment">// Handler with parameters</span>
+    <span class="keyword">const</span> <span class="function">handleItemClick</span> = (id) => {
+        console.<span class="function">log</span>(<span class="string">"Item clicked:"</span>, id);
+    };
+    
+    <span class="keyword">return</span> (
+        <span class="tag">&lt;div&gt;</span>
+            <span class="tag">&lt;button</span> <span class="attr">onClick</span>={handleClick}<span class="tag">&gt;</span>Click Me<span class="tag">&lt;/button&gt;</span>
+            
+            <span class="tag">&lt;input</span> <span class="attr">onChange</span>={handleChange} <span class="tag">/&gt;</span>
+            
+            <span class="tag">&lt;button</span> <span class="attr">onClick</span>={() => <span class="function">handleItemClick</span>(5)}<span class="tag">&gt;</span>
+                Item 5
+            <span class="tag">&lt;/button&gt;</span>
+        <span class="tag">&lt;/div&gt;</span>
+    );
+}</code></pre>
+
+            <div class="note">
+                ⚠️ <strong>Note:</strong> When passing a function with parameters, wrap it in an arrow function: <code>onClick={() => handleClick(id)}</code>
+            </div>
+        </section>
+
+        <!-- Topic 7: useEffect -->
+        <section class="topic" id="useEffect">
+            <h2>7. useEffect Hook</h2>
+            <div class="description">
+                <strong>What is useEffect?</strong><br>
+                The <code>useEffect</code> hook lets you perform side effects in functional components. Common uses include: fetching data, setting up subscriptions, and manually changing the DOM.
+            </div>
+
+            <h3>useEffect Patterns</h3>
+<pre><code><span class="keyword">import</span> { useState, useEffect } <span class="keyword">from</span> <span class="string">'react'</span>;
+
+<span class="keyword">function</span> <span class="component">EffectExamples</span>() {
+    <span class="keyword">const</span> [data, setData] = <span class="function">useState</span>(<span class="keyword">null</span>);
+    <span class="keyword">const</span> [count, setCount] = <span class="function">useState</span>(0);
+    
+    <span class="comment">// Runs on EVERY render</span>
+    <span class="function">useEffect</span>(() => {
+        console.<span class="function">log</span>(<span class="string">"Rendered!"</span>);
+    });
+    
+    <span class="comment">// Runs ONCE on mount (empty dependency array)</span>
+    <span class="function">useEffect</span>(() => {
+        console.<span class="function">log</span>(<span class="string">"Component mounted!"</span>);
+        <span class="comment">// Good for: API calls, subscriptions</span>
+    }, []);
+    
+    <span class="comment">// Runs when 'count' changes</span>
+    <span class="function">useEffect</span>(() => {
+        console.<span class="function">log</span>(<span class="string">"Count changed to:"</span>, count);
+    }, [count]);
+    
+    <span class="comment">// With cleanup function</span>
+    <span class="function">useEffect</span>(() => {
+        <span class="keyword">const</span> timer = <span class="function">setInterval</span>(() => {
+            console.<span class="function">log</span>(<span class="string">"Tick"</span>);
+        }, 1000);
+        
+        <span class="comment">// Cleanup: runs on unmount</span>
+        <span class="keyword">return</span> () => <span class="function">clearInterval</span>(timer);
+    }, []);
+}</code></pre>
+
+            <h3>Fetching Data Example</h3>
+<pre><code><span class="keyword">function</span> <span class="component">UsersList</span>() {
+    <span class="keyword">const</span> [users, setUsers] = <span class="function">useState</span>([]);
+    <span class="keyword">const</span> [loading, setLoading] = <span class="function">useState</span>(<span class="keyword">true</span>);
+    
+    <span class="function">useEffect</span>(() => {
+        <span class="function">fetch</span>(<span class="string">'https://api.example.com/users'</span>)
+            .<span class="function">then</span>(response => response.<span class="function">json</span>())
+            .<span class="function">then</span>(data => {
+                <span class="function">setUsers</span>(data);
+                <span class="function">setLoading</span>(<span class="keyword">false</span>);
+            });
+    }, []);
+    
+    <span class="keyword">if</span> (loading) <span class="keyword">return</span> <span class="tag">&lt;p&gt;</span>Loading...<span class="tag">&lt;/p&gt;</span>;
+    
+    <span class="keyword">return</span> (
+        <span class="tag">&lt;ul&gt;</span>
+            {users.<span class="function">map</span>(user => (
+                <span class="tag">&lt;li</span> <span class="attr">key</span>={user.id}<span class="tag">&gt;</span>{user.name}<span class="tag">&lt;/li&gt;</span>
+            ))}
+        <span class="tag">&lt;/ul&gt;</span>
+    );
+}</code></pre>
+        </section>
+
+        <!-- Topic 8: Conditional Rendering -->
+        <section class="topic" id="conditional">
+            <h2>8. Conditional Rendering</h2>
+            <div class="description">
+                <strong>What is Conditional Rendering?</strong><br>
+                Conditional rendering allows you to render different UI elements based on certain conditions. React uses JavaScript operators like ternary (<code>? :</code>) and logical AND (<code>&&</code>).
+            </div>
+
+            <h3>Conditional Rendering Methods</h3>
+<pre><code><span class="keyword">function</span> <span class="component">ConditionalExamples</span>({ isLoggedIn, messages, user }) {
+    <span class="keyword">return</span> (
+        <span class="tag">&lt;div&gt;</span>
+            <span class="comment">{/* Method 1: Ternary Operator */}</span>
+            {isLoggedIn ? (
+                <span class="tag">&lt;p&gt;</span>Welcome back!<span class="tag">&lt;/p&gt;</span>
+            ) : (
+                <span class="tag">&lt;p&gt;</span>Please log in<span class="tag">&lt;/p&gt;</span>
+            )}
+            
+            <span class="comment">{/* Method 2: Logical AND (&&) */}</span>
+            {messages.length > 0 && (
+                <span class="tag">&lt;span&gt;</span>You have {messages.length} messages<span class="tag">&lt;/span&gt;</span>
+            )}
+            
+            <span class="comment">{/* Method 3: Early return */}</span>
+            {!user && <span class="keyword">return</span> <span class="tag">&lt;p&gt;</span>No user found<span class="tag">&lt;/p&gt;</span>}
+        <span class="tag">&lt;/div&gt;</span>
+    );
+}
+
+<span class="comment">// Method 4: If-else inside component</span>
+<span class="keyword">function</span> <span class="component">StatusMessage</span>({ status }) {
+    <span class="keyword">if</span> (status === <span class="string">"loading"</span>) {
+        <span class="keyword">return</span> <span class="tag">&lt;p&gt;</span>Loading...<span class="tag">&lt;/p&gt;</span>;
+    }
+    <span class="keyword">if</span> (status === <span class="string">"error"</span>) {
+        <span class="keyword">return</span> <span class="tag">&lt;p&gt;</span>Error occurred!<span class="tag">&lt;/p&gt;</span>;
+    }
+    <span class="keyword">return</span> <span class="tag">&lt;p&gt;</span>Success!<span class="tag">&lt;/p&gt;</span>;
+}</code></pre>
+        </section>
+
+        <!-- Topic 9: Lists & Keys -->
+        <section class="topic" id="lists">
+            <h2>9. Lists & Keys</h2>
+            <div class="description">
+                <strong>Rendering Lists</strong><br>
+                Use the <code>map()</code> method to transform arrays into lists of elements. Each item needs a unique <code>key</code> prop to help React identify which items have changed.
+            </div>
+
+            <h3>Basic List Rendering</h3>
+<pre><code><span class="keyword">function</span> <span class="component">FruitList</span>() {
+    <span class="keyword">const</span> fruits = [<span class="string">"Apple"</span>, <span class="string">"Banana"</span>, <span class="string">"Orange"</span>];
+    
+    <span class="keyword">return</span> (
+        <span class="tag">&lt;ul&gt;</span>
+            {fruits.<span class="function">map</span>((fruit, index) => (
+                <span class="tag">&lt;li</span> <span class="attr">key</span>={index}<span class="tag">&gt;</span>{fruit}<span class="tag">&lt;/li&gt;</span>
+            ))}
+        <span class="tag">&lt;/ul&gt;</span>
+    );
+}
+
+<span class="comment">// With objects (use unique id as key)</span>
+<span class="keyword">function</span> <span class="component">UserList</span>() {
+    <span class="keyword">const</span> users = [
+        { id: 1, name: <span class="string">"Alice"</span>, role: <span class="string">"Admin"</span> },
+        { id: 2, name: <span class="string">"Bob"</span>, role: <span class="string">"User"</span> },
+        { id: 3, name: <span class="string">"Charlie"</span>, role: <span class="string">"User"</span> }
+    ];
+    
+    <span class="keyword">return</span> (
+        <span class="tag">&lt;div&gt;</span>
+            {users.<span class="function">map</span>(user => (
+                <span class="tag">&lt;div</span> <span class="attr">key</span>={user.id} <span class="attr">className</span>=<span class="string">"user-card"</span><span class="tag">&gt;</span>
+                    <span class="tag">&lt;h3&gt;</span>{user.name}<span class="tag">&lt;/h3&gt;</span>
+                    <span class="tag">&lt;p&gt;</span>{user.role}<span class="tag">&lt;/p&gt;</span>
+                <span class="tag">&lt;/div&gt;</span>
+            ))}
+        <span class="tag">&lt;/div&gt;</span>
+    );
+}</code></pre>
+
+            <div class="note">
+                ⚠️ <strong>Important:</strong> Never use array index as key if the list can be reordered. Use unique IDs from your data instead.
+            </div>
+        </section>
+
+        <!-- Topic 10: Forms -->
+        <section class="topic" id="forms">
+            <h2>10. Forms & Inputs</h2>
+            <div class="description">
+                <strong>Controlled Components</strong><br>
+                In React, form elements are typically "controlled" - their values are driven by component state. This gives you full control over the form data.
+            </div>
+
+            <h3>Basic Form Example</h3>
+<pre><code><span class="keyword">import</span> { useState } <span class="keyword">from</span> <span class="string">'react'</span>;
+
+<span class="keyword">function</span> <span class="component">LoginForm</span>() {
+    <span class="keyword">const</span> [formData, setFormData] = <span class="function">useState</span>({
+        email: <span class="string">""</span>,
+        password: <span class="string">""</span>
+    });
+    
+    <span class="keyword">const</span> <span class="function">handleChange</span> = (e) => {
+        <span class="keyword">const</span> { name, value } = e.target;
+        <span class="function">setFormData</span>(prev => ({
+            ...prev,
+            [name]: value
+        }));
+    };
+    
+    <span class="keyword">const</span> <span class="function">handleSubmit</span> = (e) => {
+        e.<span class="function">preventDefault</span>(); <span class="comment">// Prevent page refresh</span>
+        console.<span class="function">log</span>(<span class="string">"Form submitted:"</span>, formData);
+    };
+    
+    <span class="keyword">return</span> (
+        <span class="tag">&lt;form</span> <span class="attr">onSubmit</span>={handleSubmit}<span class="tag">&gt;</span>
+            <span class="tag">&lt;input</span>
+                <span class="attr">type</span>=<span class="string">"email"</span>
+                <span class="attr">name</span>=<span class="string">"email"</span>
+                <span class="attr">value</span>={formData.email}
+                <span class="attr">onChange</span>={handleChange}
+                <span class="attr">placeholder</span>=<span class="string">"Email"</span>
+            <span class="tag">/&gt;</span>
+            
+            <span class="tag">&lt;input</span>
+                <span class="attr">type</span>=<span class="string">"password"</span>
+                <span class="attr">name</span>=<span class="string">"password"</span>
+                <span class="attr">value</span>={formData.password}
+                <span class="attr">onChange</span>={handleChange}
+                <span class="attr">placeholder</span>=<span class="string">"Password"</span>
+            <span class="tag">/&gt;</span>
+            
+            <span class="tag">&lt;button</span> <span class="attr">type</span>=<span class="string">"submit"</span><span class="tag">&gt;</span>Login<span class="tag">&lt;/button&gt;</span>
+        <span class="tag">&lt;/form&gt;</span>
+    );
+}</code></pre>
+
+            <h3>Different Input Types</h3>
+<pre><code><span class="comment">// Checkbox</span>
+<span class="tag">&lt;input</span>
+    <span class="attr">type</span>=<span class="string">"checkbox"</span>
+    <span class="attr">checked</span>={isChecked}
+    <span class="attr">onChange</span>={() => <span class="function">setIsChecked</span>(!isChecked)}
+<span class="tag">/&gt;</span>
+
+<span class="comment">// Select dropdown</span>
+<span class="tag">&lt;select</span> <span class="attr">value</span>={selected} <span class="attr">onChange</span>={(e) => <span class="function">setSelected</span>(e.target.value)}<span class="tag">&gt;</span>
+    <span class="tag">&lt;option</span> <span class="attr">value</span>=<span class="string">"option1"</span><span class="tag">&gt;</span>Option 1<span class="tag">&lt;/option&gt;</span>
+    <span class="tag">&lt;option</span> <span class="attr">value</span>=<span class="string">"option2"</span><span class="tag">&gt;</span>Option 2<span class="tag">&lt;/option&gt;</span>
+<span class="tag">&lt;/select&gt;</span>
+
+<span class="comment">// Textarea</span>
+<span class="tag">&lt;textarea</span>
+    <span class="attr">value</span>={text}
+    <span class="attr">onChange</span>={(e) => <span class="function">setText</span>(e.target.value)}
+    <span class="attr">rows</span>=<span class="string">"4"</span>
+<span class="tag">/&gt;</span></code></pre>
+
+            <div class="tip">
+                💡 <strong>Tip:</strong> Always use <code>e.preventDefault()</code> in form submit handlers to prevent the default page refresh behavior.
+            </div>
+        </section>
+
+        <footer>
+            <p>📖 React Reference Notes | Created for Student Learning</p>
+            <p>Last Updated: January 2026</p>
+        </footer>
+    </div>
+</body>
+</html>
